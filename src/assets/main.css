@@ -17,7 +17,7 @@ a,
 
 @media (hover: hover) {
   a:hover {
-    background-color: hsla(160, 100%, 37%, 0.2);
+    background-color: hsla(0, 100%, 50%, 0.664);
   }
 }
 
@@ -32,4 +32,17 @@ a,
     grid-template-columns: 1fr 1fr;
     padding: 0 2rem;
   }
+}
+.content{
+  margin: 0 auto;
+}
+.default-input{
+  width: 40vw;
+}
+
+.default-button{
+  width: 40vw;
+}
+half-button{
+  width: 40vw;
 }
