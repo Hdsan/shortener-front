@@ -85,7 +85,7 @@ export default {
   },
   async created() {
     this.User = await this.Session.getSession();
-    console.log(this.User)
+   
     if(!this.User ){
       router.push("/")
     }

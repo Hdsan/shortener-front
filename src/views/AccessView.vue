@@ -12,7 +12,7 @@ export default {
    async created() {
         let splittedUrl = (this.url.fullPath).split("/")[2];
         const ogLink = await this.UrlController.accessUrl(splittedUrl);
-        console.log(ogLink.origin)
+       
         if(ogLink){
             window.location.replace(ogLink.origin);
 

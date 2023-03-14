@@ -67,7 +67,7 @@ export default {
       this.url.userId = this.User.userId
       try {
         this.generated = await this.UrlController.createUrl(this.url);
-        console.log(this.generated)
+        
         this.created = true;
       }
       catch (err) {
