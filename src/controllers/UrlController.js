@@ -34,6 +34,15 @@ export default class UrlController {
       return false
     }
   }
+  async accessUrl(url){
+    try {
+      const res = await axios.patch(`${localhost}/url/${url}`)
+     return res.data;
+    } catch (err) {
+      console.log(err)
+      return false
+    }
+  }
   async deleteUrl(id) {
     try {
       const res = await axios.delete(`${localhost}/url/${id}`)

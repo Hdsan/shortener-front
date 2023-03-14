@@ -16,7 +16,7 @@ import UrlController from '../controllers/UrlController'
 
                 </span>
                 <span  v-if="mutable">
-                    {{ host }}{{ item.shortUrl }}
+                    <a :href="host+item.shortUrl">{{ host }}{{ item.shortUrl }}</a> 
                 </span>
                 <span v-else>
                     {{ item.title }}
@@ -38,7 +38,7 @@ export default {
     },
     data() {
     return {
-        host:'http://localhost:3000',
+        host:'http://localhost:5173',
         UrlController: new UrlController(),
         }
     },

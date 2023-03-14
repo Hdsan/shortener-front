@@ -20,7 +20,7 @@ import UrlController from '../controllers/UrlController'
             URL gerada
           </div>
           <div v-if="created" class="pl-3 pt-3 ">
-            {{ host }}{{ generated.shortUrl }}
+            {{ host }}{{ generated }}
           </div>
           <div class="pl-3 pt-3 " v-else>
             <v-btn color="success" @click="create">gerar</v-btn>
@@ -49,7 +49,7 @@ export default {
     return {
       UrlController: new UrlController(),
       Session: new SessionController(),
-      host: 'http://localhost:3000',
+      host: 'http://localhost:5173',
       User: {},
       url: {
         title: "",
@@ -67,6 +67,7 @@ export default {
       this.url.userId = this.User.userId
       try {
         this.generated = await this.UrlController.createUrl(this.url);
+        console.log(this.generated)
         this.created = true;
       }
       catch (err) {
