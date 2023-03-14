@@ -7,11 +7,37 @@ export default class UrlController {
 
   async getAllFromUser(userId) {
     try {
+      const res = await axios.get(`${localhost}/url/${userId}`)
+     return res.data;
+    } catch (err) {
+      console.log(err)
+      return false
+    }
+  }
+  async getAll() {
+    try {
+      const res = await axios.get(`${localhost}/url`)
+     return res.data;
+    } catch (err) {
+      console.log(err)
+      return false
+    }
+  }
+  async createUrl(url) {
+    try {
       const res = await axios.post(`${localhost}/url`, {
-        id: userId,
+        url:url
       })
-      console.log(res)
-     return res;
+     return res.data;
+    } catch (err) {
+      console.log(err)
+      return false
+    }
+  }
+  async deleteUrl(id) {
+    try {
+      const res = await axios.delete(`${localhost}/url/${id}`)
+     return res.data;
     } catch (err) {
       console.log(err)
       return false

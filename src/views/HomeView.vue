@@ -1,42 +1,53 @@
 <script setup>
 import router from '../router/index'
-import axios from 'axios'
 import DefaultTable from '../components/DefaultTable.vue'
 import ModalCreation from '../components/ModalCreation.vue'
 import SessionController from '../controllers/SessionController'
-
+import UrlController from '../controllers/UrlController'
 </script>
 
 <template>
   <div>
     <ModalCreation
-     v-if="creationDialog" @close="creationDialog = false" />
+     v-if="creationDialog" @close="closeAndRefresh" />
 
     <div class="greet">
       <span>
-        Logado como "Usuário"
+        Logado como
+      </span>
+      <span class="pr-6">
+        {{ User.name }}
       </span>
       <span>
-        <v-btn color="red">Logout</v-btn>
+        <v-btn @click="logout" color="red">Logout</v-btn>
       </span>
     </div>
+
+
     <v-container class="main-content">
 
-
-      <v-row>
-        Urls criadas
-      </v-row>
       <v-row style="flex-wrap: nowrap;">
 
         <v-col>
-          <DefaultTable :items="urls" :mutable="true"/>
-          
+          <v-tabs color="red-accent-4" align-tabs="center" v-model="tab" bg-color="white">
+            <v-tab :value="1" @click="getUserUrls">Minhas Urls</v-tab>
+            <v-tab :value="2" @click="getTopUrls" >Urls mais visitadas</v-tab>
+          </v-tabs>
+          <v-window v-model="tab">
+            <v-window-item :value="1" >
+              <DefaultTable :items="myUrls" :mutable="true" @update="getUserUrls" />
+            </v-window-item>
+            <v-window-item :value="2" >
+              <DefaultTable :items="topUrls" :mutable="false" @update="getTopUrls" />
+            </v-window-item>
+          </v-window>
+
         </v-col>
 
         <v-col>
           <v-btn @click="creationDialog = true" color="red">CRIAR ENCURTADOR</v-btn>
         </v-col>
-        
+
       </v-row>
     </v-container>
   </div>
@@ -51,9 +62,17 @@ export default {
   },
   data() {
     return {
-      Session : new SessionController(),
-      creationDialog:false,
-      urls: ["Google", "Bing", "DuckDuckGo", "Google", "Bing", "DuckDuckGo", "Google", "Bing", "DuckDuckGo", "noen"],
+      Session: new SessionController(),
+      UrlController: new UrlController(),
+      tab: null,
+      User: {
+        user: null,
+        name: null,
+        id: null
+      },
+      creationDialog: false,
+      myUrls: [],
+      topUrls: [],
       headers: [
         {
           align: 'start',
@@ -64,30 +83,41 @@ export default {
       ],
     }
   },
+  async created() {
+    this.User = await this.Session.getSession();
+    console.log(this.User)
+    if(!this.User ){
+      router.push("/")
+    }
+    this.getUserUrls();
+    this.getTopUrls();
+  },
   methods: {
-    openCreationDialog(){
+    closeAndRefresh(){
+      this.creationDialog = false
+      this.getUserUrls()
+      this.getTopUrls() 
+    },
+    async getUserUrls() {
+      this.myUrls = await this.UrlController.getAllFromUser(this.User.userId);
+    },
+    async getTopUrls() {
+      this.topUrls = await this.UrlController.getAll();
+    },
+    openCreationDialog() {
       this.creationDialog = true;
     },
-    send: () => {
-      axios
-        .get("http://localhost:3000/routes")
-        .then((resp) => {
-
-          console.log(resp)
-
-        })
-
-    },
-    logout(){
-      try{
+    
+    logout() {
+      try {
         this.Session.logout();
         router.push('/')
       }
-      catch(err){
+      catch (err) {
         console.log(err)
       }
     }
-    
+
   },
 };
 </script>
@@ -103,6 +133,6 @@ export default {
 }
 
 .main-content {
-  padding-top: 10vh;
+  padding-top: 18vh;
 }
 </style>

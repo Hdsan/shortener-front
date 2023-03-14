@@ -2,19 +2,18 @@ export default class UrlController {
   constructor() {}
   
   setSession(user) {
-    console.log(user)
     localStorage.setItem('logged', true)
     localStorage.setItem('user', user.user)
     localStorage.setItem('userId', user.id)
     localStorage.setItem('userName', user.name)
   }
 
-  getSession() {
+  async getSession() {
     let logged = localStorage.getItem('logged')
     if (logged) {
-      const user = localStorage.setItem('user')
-      const userId = localStorage.setItem('userId')
-      const name = localStorage.setItem('userName')
+      const user = localStorage.getItem('user')
+      const userId = localStorage.getItem('userId')
+      const name = localStorage.getItem('userName')
 
       const session = {userId,user,name}
       return session;
